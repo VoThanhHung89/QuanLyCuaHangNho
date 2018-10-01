@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="QuanLyHang" Class="QLCuaHangDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=.;Initial Catalog=QuanLyHang;Integrated Security=True" SettingsObjectName="DataAccessLayer.Properties.Settings" SettingsPropertyName="QuanLyHangConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.ChiTiet" Member="ChiTiets">
+    <Type Name="ChiTiet">
+      <Column Name="MaNX" Type="System.String" DbType="NChar(15) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MaHang" Type="System.String" DbType="NChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SoLuong" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DonGia" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Association Name="Hang_ChiTiet" Member="Hang" ThisKey="MaHang" OtherKey="MaHang" Type="Hang" IsForeignKey="true" />
+      <Association Name="NhapXuat_ChiTiet" Member="NhapXuat" ThisKey="MaNX" OtherKey="MaNX" Type="NhapXuat" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TaiKhoan" Member="TaiKhoans">
+    <Type Name="TaiKhoan">
+      <Column Name="TenDangNhap" Type="System.String" DbType="NChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MatKhau" Type="System.String" DbType="NChar(100)" CanBeNull="true" />
+      <Association Name="TaiKhoan_LsTaiKhoan" Member="LsTaiKhoans" ThisKey="TenDangNhap" OtherKey="TenDangNhap" Type="LsTaiKhoan" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Hang" Member="Hangs">
+    <Type Name="Hang">
+      <Column Name="MaHang" Type="System.String" DbType="NChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TenHang" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="SoLuong" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DonViTinh" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="DonGiaNhap" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="DonGiaXuat" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="GhiChu" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Association Name="Hang_ChiTiet" Member="ChiTiets" ThisKey="MaHang" OtherKey="MaHang" Type="ChiTiet" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Khach" Member="Khaches">
+    <Type Name="Khach">
+      <Column Name="MaKhach" Type="System.String" DbType="NChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TenKhach" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="SDT" Type="System.String" DbType="NChar(30)" CanBeNull="true" />
+      <Column Name="DiaChi" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="GhiChu" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Association Name="Khach_NhapXuat" Member="NhapXuats" ThisKey="MaKhach" OtherKey="MaKhach" Type="NhapXuat" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NhapXuat" Member="NhapXuats">
+    <Type Name="NhapXuat">
+      <Column Name="MaNX" Type="System.String" DbType="NChar(15) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MaKhach" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="Ngay" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="GhiChu" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Association Name="NhapXuat_ChiTiet" Member="ChiTiets" ThisKey="MaNX" OtherKey="MaNX" Type="ChiTiet" />
+      <Association Name="Khach_NhapXuat" Member="Khach" ThisKey="MaKhach" OtherKey="MaKhach" Type="Khach" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LsTaiKhoan" Member="LsTaiKhoans">
+    <Type Name="LsTaiKhoan">
+      <Column Name="MaLS" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TenDangNhap" Type="System.String" DbType="NChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SignIn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="SignOut" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="TaiKhoan_LsTaiKhoan" Member="TaiKhoan" ThisKey="TenDangNhap" OtherKey="TenDangNhap" Type="TaiKhoan" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.SP_ThemHang" Method="SP_ThemHang">
+    <Parameter Name="MaHang" Parameter="maHang" Type="System.String" DbType="NChar(10)" />
+    <Parameter Name="TenHang" Parameter="tenHang" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="SoLuong" Parameter="soLuong" Type="System.Int32" DbType="Int" />
+    <Parameter Name="DonViTinh" Parameter="donViTinh" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="DonGiaNhap" Parameter="donGiaNhap" Type="System.Double" DbType="Float" />
+    <Parameter Name="DonGiaXuat" Parameter="donGiaXuat" Type="System.Double" DbType="Float" />
+    <Parameter Name="GhiChu" Parameter="ghiChu" Type="System.String" DbType="NVarChar(1000)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_XoaTK" Method="SP_XoaTK">
+    <Parameter Name="TenDangNhap" Parameter="tenDangNhap" Type="System.String" DbType="NChar(20)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_ThemKhach" Method="SP_ThemKhach">
+    <Parameter Name="MaKhach" Parameter="maKhach" Type="System.String" DbType="NChar(10)" />
+    <Parameter Name="TenKhach" Parameter="tenKhach" Type="System.String" DbType="NVarChar(30)" />
+    <Parameter Name="SDT" Parameter="sDT" Type="System.String" DbType="NChar(30)" />
+    <Parameter Name="DiaChi" Parameter="diaChi" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="GhiChu" Parameter="ghiChu" Type="System.String" DbType="NVarChar(1000)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_XemNhapXuat" Method="SP_XemNhapXuat">
+    <ElementType Name="SP_XemNhapXuatResult">
+      <Column Name="MaNX" Type="System.String" DbType="NChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="MaKhach" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="TenKhach" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="SDT" Type="System.String" DbType="NChar(30)" CanBeNull="true" />
+      <Column Name="DiaChi" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Ngay" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="GhiChu" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="TongTien" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SP_SuaTK" Method="SP_SuaTK">
+    <Parameter Name="TenDangNhap" Parameter="tenDangNhap" Type="System.String" DbType="NChar(20)" />
+    <Parameter Name="MatKhau" Parameter="matKhau" Type="System.String" DbType="NChar(100)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_ThemTK" Method="SP_ThemTK">
+    <Parameter Name="TenDangNhap" Parameter="tenDangNhap" Type="System.String" DbType="NChar(20)" />
+    <Parameter Name="MatKhau" Parameter="matKhau" Type="System.String" DbType="NChar(100)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_SuaHang" Method="SP_SuaHang">
+    <Parameter Name="MaHang" Parameter="maHang" Type="System.String" DbType="NChar(10)" />
+    <Parameter Name="TenHang" Parameter="tenHang" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="SoLuong" Parameter="soLuong" Type="System.Int32" DbType="Int" />
+    <Parameter Name="DonViTinh" Parameter="donViTinh" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="DonGiaNhap" Parameter="donGiaNhap" Type="System.Double" DbType="Float" />
+    <Parameter Name="DonGiaXuat" Parameter="donGiaXuat" Type="System.Double" DbType="Float" />
+    <Parameter Name="GhiChu" Parameter="ghiChu" Type="System.String" DbType="NVarChar(1000)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_XoaHang" Method="SP_XoaHang">
+    <Parameter Name="MaHang" Parameter="maHang" Type="System.String" DbType="NChar(10)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_SuaKhach" Method="SP_SuaKhach">
+    <Parameter Name="MaKhach" Parameter="maKhach" Type="System.String" DbType="NChar(10)" />
+    <Parameter Name="TenKhach" Parameter="tenKhach" Type="System.String" DbType="NVarChar(30)" />
+    <Parameter Name="SDT" Parameter="sDT" Type="System.String" DbType="NChar(30)" />
+    <Parameter Name="DiaChi" Parameter="diaChi" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="GhiChu" Parameter="ghiChu" Type="System.String" DbType="NVarChar(1000)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_XoaKhach" Method="SP_XoaKhach">
+    <Parameter Name="MaKhach" Parameter="maKhach" Type="System.String" DbType="NChar(10)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_ThemNX" Method="SP_ThemNX">
+    <Parameter Name="MaNX" Parameter="maNX" Type="System.String" DbType="NChar(15)" />
+    <Parameter Name="MaKhach" Parameter="maKhach" Type="System.String" DbType="NChar(10)" />
+    <Parameter Name="Ngay" Parameter="ngay" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="GhiChu" Parameter="ghiChu" Type="System.String" DbType="NVarChar(1000)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_SuaNX" Method="SP_SuaNX">
+    <Parameter Name="MaNX" Parameter="maNX" Type="System.String" DbType="NChar(15)" />
+    <Parameter Name="MaKhach" Parameter="maKhach" Type="System.String" DbType="NChar(10)" />
+    <Parameter Name="Ngay" Parameter="ngay" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="GhiChu" Parameter="ghiChu" Type="System.String" DbType="NVarChar(1000)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_XoaNX" Method="SP_XoaNX">
+    <Parameter Name="MaNX" Parameter="maNX" Type="System.String" DbType="NChar(10)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_ThemCT" Method="SP_ThemCT">
+    <Parameter Name="MaNX" Parameter="maNX" Type="System.String" DbType="NChar(15)" />
+    <Parameter Name="MaHang" Parameter="maHang" Type="System.String" DbType="NChar(10)" />
+    <Parameter Name="SoLuong" Parameter="soLuong" Type="System.Int32" DbType="Int" />
+    <Parameter Name="DonGia" Parameter="donGia" Type="System.Double" DbType="Float" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_SuaCT" Method="SP_SuaCT">
+    <Parameter Name="MaNX" Parameter="maNX" Type="System.String" DbType="NChar(15)" />
+    <Parameter Name="MaHang" Parameter="maHang" Type="System.String" DbType="NChar(10)" />
+    <Parameter Name="SoLuong" Parameter="soLuong" Type="System.Int32" DbType="Int" />
+    <Parameter Name="DonGia" Parameter="donGia" Type="System.Double" DbType="Float" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_XemKhachGiaoDich" Method="SP_XemKhachGiaoDich">
+    <Parameter Name="makhach" Type="System.String" DbType="NChar(10)" />
+    <Parameter Name="loaiphieu" Type="System.Char" DbType="NChar(1)" />
+    <ElementType Name="SP_XemKhachGiaoDichResult">
+      <Column Name="MaKhach" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="TenKhach" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="SDT" Type="System.String" DbType="NChar(30)" CanBeNull="true" />
+      <Column Name="DiaChi" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="GhiChuKhach" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="MaNX" Type="System.String" DbType="NChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="Ngay" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="GhiChuNX" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="MaHang" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="TenHang" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="SoLuong" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DonGia" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Tien" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SP_XemCTNX" Method="SP_XemCTNX">
+    <Parameter Name="manx" Type="System.String" DbType="NChar(15)" />
+    <ElementType Name="SP_XemCTNXResult">
+      <Column Name="STT" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="MaHang" Type="System.String" DbType="NChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenHang" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="SoLuong" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DonGia" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="ThanhTien" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SP_XemHangNX" Method="SP_XemHangNX">
+    <Parameter Name="mahang" Type="System.String" DbType="NChar(10)" />
+    <Parameter Name="ngaybd" Type="System.String" DbType="NChar(10)" />
+    <Parameter Name="ngaykt" Type="System.String" DbType="NChar(10)" />
+    <ElementType Name="SP_XemHangNXResult">
+      <Column Name="MaHang" Type="System.String" DbType="NChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="TenHang" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="SoLuongTon" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DonViTinh" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="DonGiaNhap" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="DonGiaXuat" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="GhiChu" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="MaNX" Type="System.String" DbType="NChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="Ngay" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="SoLuongNX" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DonGia" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </ElementType>
+  </Function>
+</Database>
